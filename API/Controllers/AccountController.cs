@@ -21,6 +21,9 @@ namespace API.Controllers
 
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto dto) {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
 
             if(await UserExists(dto.Username)) return BadRequest("Username is taken");
 

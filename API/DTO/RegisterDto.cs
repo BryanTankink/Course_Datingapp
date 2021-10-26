@@ -6,10 +6,10 @@ namespace API.DTO
     {
         [Required]
         [MinLength(length: 5, ErrorMessage = "Minimum username length is 5")]
-        public string Username { get; set; }
+        public string Username { get; set; } = "";
 
         [Required]
         [MinLength(length: 5, ErrorMessage = "Minimum password length is 5")]
-        public string Password { get; set; }
+        public string Password { get; set; } = "";
     }
 }
