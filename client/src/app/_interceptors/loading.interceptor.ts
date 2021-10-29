@@ -18,7 +18,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     this.busyServer.busy();
 
     return next.handle(request).pipe(
-      delay(1000),
+      delay(150),
       finalize(() => {
         this.busyServer.idle();
       })
