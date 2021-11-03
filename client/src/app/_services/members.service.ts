@@ -64,9 +64,14 @@ export class MembersService {
   }
 
   getMember(username: string) {
-    const member = [...this.memberCache.values()].reduce((arr, elem) => {
-      arr.concat(elem.result);
-    }, []).find((member: Member) => member.username == username);
+    const members = [...this.memberCache.values()].reduce((arr, elem) => {
+      if(elem != undefined)
+        arr.concat(elem.result);
+    }, []);
+    let member = undefined;
+    if(members)
+      member = members.find((member: Member) => member.username == username);
+    
     if(member)
       return of(member);
 
@@ -89,6 +94,17 @@ export class MembersService {
 
   deletePhoto(photoId: number) {
     return this.http.delete(this.baseUrl + "users/delete-photo/" + photoId);
+  }
+
+  addLike(username: string) {
+    return this.http.post(this.baseUrl + "likes/" + username, {});
+  }
+
+  getLikes(predegate: string, pageNumber: number, pageSize: number) {
+
+    let params = this.getPaginationHeaders(pageNumber, pageSize);
+    params = params.append('predegate', predegate);
+    return this.getPaginatedResults<Partial<Member[]>>(this.baseUrl + "likes", params);
   }
 
   private getPaginatedResults<T>(url: string, params: HttpParams) {
